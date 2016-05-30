@@ -9,34 +9,37 @@ import { Menu, Icon } from 'antd';
 const SubMenu = Menu.SubMenu
 
 const menus = [
-    {issub:'1',keys:'sub1',icon:'mail',text:'门店统计',menus:[{keys:'1',text:'图表',link:'/chart'},{keys:'2',text:'菜单',link:'/menu'}]},
-    {issub:'1',keys:'sub2',icon:'appstore',text:'订单统计',menus:[{keys:'11',text:'选项11',link:'/#'},{keys:'12',text:'选项12',link:'/#'},{issub:'1',keys:'sub3',text:'三级导航', menus:[{keys:'22',text:'选项22',link:'/#'}]}]},
-    {issub:'1',keys:'sub4',icon:'setting',text:'用户统计',menus:[{keys:'31',text:'选项1',link:'/#'},{keys:'32',text:'选项2',link:'/#'}]},
+    {issub:'1',keys:'sub1',icon:'mail',text:'门店统计',menus:[{keys:'stores',text:'趋势图',link:'/chart/stores'}]},
+    {issub:'1',keys:'sub2',icon:'appstore',text:'订单统计',menus:[{keys:'order',text:'趋势图',link:'/chart/order'}]},
+    {issub:'1',keys:'sub4',icon:'setting',text:'用户统计',menus:[{keys:'user',text:'趋势图',link:'/chart/user'}]},
+    {issub:'1',keys:'sub5',icon:'mail',text:'交易统计',menus:[{keys:'trade',text:'趋势图',link:'/chart/trade'}]},
 ]
 
 export default class MenuBar extends React.Component{
 
     constructor(props, context){
         super(props, context)
-        this.state = {
-            current: '1',
-            openKeys: []
-        }
+        //this.state = {
+        //    current: '1',
+        //    openKeys: []
+        //}
         this.handleClick = this.handleClick.bind(this)
         this.onToggle = this.onToggle.bind(this)
     }
 
     handleClick(e) {
-        this.setState({
-            current: e.key,
-            openKeys: e.keyPath.slice(1),
-        });
+        this.props.handleMenuClick(e)
+        //this.setState({
+        //    current: e.key,
+        //    openKeys: e.keyPath.slice(1),
+        //});
     }
 
     onToggle(info) {
-        this.setState({
-            openKeys: info.open ? info.keyPath : info.keyPath.slice(1),
-        });
+        this.props.handleMenuToggle(info)
+        //this.setState({
+        //    openKeys: info.open ? info.keyPath : info.keyPath.slice(1),
+        //});
     }
 
 
@@ -72,13 +75,14 @@ export default class MenuBar extends React.Component{
 
 //style={{ width: 240 }}
     render(){
+        const { state } = this.props
         return(
-            <Menu onClick={this.handleClick.bind(this)}
+            <Menu onClick={this.handleClick}
 
-                  openKeys={this.state.openKeys}
+                  openKeys={state.openKeys}
                   onOpen={this.onToggle}
                   onClose={this.onToggle}
-                  selectedKeys={[this.state.current]}
+                  selectedKeys={[state.current]}
                   mode="inline">
                     {menus.map((menu, i) =>
                         this.rendermenu(menu)

@@ -12,7 +12,9 @@ const {
     } = components
 
 const {
-    App
+    App,
+    Home,
+    Charts
     } = container
 
 function getRootChildren(props){
@@ -33,9 +35,10 @@ function getRootChildren(props){
 function renderRoutes(){
     return(
         <Router history={browserHistory}>
-            <Route path="/" component={App}>
-                <Route path="/menu" component={MenuBar} />
-                <Route path="/chart" component={Charts01} />
+            <Route component={App}>
+                    <Route path="/" component={Home} />
+                    <Route path="/menu" component={MenuBar} />
+                    <Route path="/chart/:id" component={Charts} />
             </Route>
         </Router>
     )
